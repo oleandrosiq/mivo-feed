@@ -1,0 +1,18 @@
+accountController:
+  handler: src/modules/accounts/handler.handler
+  events:
+    - httpApi:
+        path: /accounts
+        method: POST
+    - httpApi:
+        path: /accounts
+        method: GET
+    - httpApi:
+        path: /accounts/{accountId}
+        method: GET
+    - httpApi:
+        path: /accounts/{accountId}
+        method: PUT
+    - httpApi:
+        path: /accounts/{accountId}
+        method: DELETE

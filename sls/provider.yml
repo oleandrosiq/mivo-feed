@@ -1,0 +1,25 @@
+name: aws
+runtime: nodejs20.x
+region: ${self:custom.defaults.region}
+stage: ${opt:stage, self:custom.defaults.stage}
+architecture: arm64
+timeout: 2
+memorySize: 128
+environment:
+  STAGE_NAME: ${env:STAGE_NAME, 'development'}
+  MIVO_TABLE: !Ref MivoTable
+  ALGOLIA_APP_ID: ${env:ALGOLIA_APP_ID}
+  ALGOLIA_API_KEY: ${env:ALGOLIA_API_KEY}
+iam:
+  role:
+    statements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+          - dynamodb:Query
+          - dynamodb:GetItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+        Resource:
+          - !GetAtt MivoTable.Arn # Short Syntax
+          - !Join ["/", [!GetAtt MivoTable.Arn, "index", "*"]]

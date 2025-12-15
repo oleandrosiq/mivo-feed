@@ -1,0 +1,10 @@
+esbuild:
+  minify: true
+  bundle: true
+  sourcemap: false
+  # Vamos preferir usar o external e exclude quando utilizarmos bibliotecas em layers ou
+  # pacotes da aws da sdk, pois as biblioteca da aws ja disponiveis no ambiente da lambda
+  external: # Na hora de fazer o bundle mantem esses pacotes como externos e mantem em pasta separada / nao vai trazer o codigo para dentro do bundle
+    - "@aws-sdk/*"
+  exclude: # vai preserver a importacao idependente de onde os modulos vierem
+    - "@aws-sdk/*"

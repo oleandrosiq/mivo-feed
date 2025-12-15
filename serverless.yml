@@ -1,0 +1,22 @@
+org: mivod
+service: mivo-feed
+
+plugins:
+  - serverless-offline
+
+custom: ${file(./sls/custom.yml)}
+
+provider: ${file(./sls/provider.yml)}
+
+build: ${file(./sls/build.yml)}
+
+package:
+  individually: true
+  # patterns: # O Patterns serve para incluir arquivos que nao sao incluidos por padrao no deploy da lambda
+  #   - src/templates/*.hbs
+
+functions:
+  - ${file(./sls/functions/accounts.yml)}
+
+resources:
+  - ${file(./sls/resources/dynamodb/MivoTable.yml)}
