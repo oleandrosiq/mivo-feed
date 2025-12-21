@@ -1,0 +1,18 @@
+communitiesController:
+  handler: src/modules/communities/handler.handler
+  events:
+    - httpApi:
+        path: /communities
+        method: POST
+    - httpApi:
+        path: /communities
+        method: GET
+    - httpApi:
+        path: /communities/{slug}
+        method: GET
+    - httpApi:
+        path: /communities/{slug}
+        method: PUT
+    - httpApi:
+        path: /communities/{slug}
+        method: DELETE

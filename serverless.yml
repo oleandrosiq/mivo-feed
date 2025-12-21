@@ -17,6 +17,7 @@ package:
 
 functions:
   - ${file(./sls/functions/accounts.yml)}
+  - ${file(./sls/functions/communities.yml)}
 
 resources:
   - ${file(./sls/resources/dynamodb/MivoTable.yml)}
