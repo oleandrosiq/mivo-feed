@@ -5,6 +5,12 @@ accountController:
         path: /accounts
         method: POST
     - httpApi:
+        path: /auth/sign-in
+        method: POST
+    - httpApi:
+        path: /auth/confirm
+        method: POST
+    - httpApi:
         path: /accounts
         method: GET
         authorizer:

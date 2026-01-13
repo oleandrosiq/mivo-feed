@@ -6,6 +6,8 @@ import { updateAccount } from "./controllers/update-account";
 import { deleteAccount } from "./controllers/delete-account";
 import { UsernameExistsException } from "@aws-sdk/client-cognito-identity-provider";
 import { response } from "../../utils/response";
+import { signInAccount } from "./controllers/sign-in";
+import { accountConfirmation } from "./controllers/account-confirmation";
 
 export async function handler(event: APIGatewayProxyEventV2) {
   const { requestContext, body, pathParameters } = event;
@@ -16,6 +18,14 @@ export async function handler(event: APIGatewayProxyEventV2) {
   try {
     if (method === "POST" && path === "/accounts") {
       return await createAccount(body);
+    }
+
+    if (method === "POST" && path === "/auth/sign-in") {
+      return await signInAccount(event);
+    }
+
+    if (method === "POST" && path === "/auth/confirm") {
+      return await accountConfirmation(event);
     }
 
     if (method === "GET" && path === "/accounts") {

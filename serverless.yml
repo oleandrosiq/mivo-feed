@@ -21,3 +21,4 @@ functions:
 
 resources:
   - ${file(./sls/resources/dynamodb/MivoTable.yml)}
+  - ${file(./sls/resources/cognito/MivoUserPool.yml)}

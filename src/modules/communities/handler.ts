@@ -1,9 +1,12 @@
-import type { APIGatewayProxyEventV2 } from "aws-lambda";
+import type {
+  APIGatewayProxyEventV2,
+  APIGatewayProxyEventV2WithJWTAuthorizer,
+} from "aws-lambda";
 import { createCommunity } from "./controllers/create-community";
 import { listCommunities } from "./controllers/list-communities";
 import { getCommunity } from "./controllers/get-community";
 
-export async function handler(event: APIGatewayProxyEventV2) {
+export async function handler(event: APIGatewayProxyEventV2WithJWTAuthorizer) {
   const { requestContext, body, pathParameters } = event;
   const { http } = requestContext;
   const method = http.method;
@@ -11,7 +14,14 @@ export async function handler(event: APIGatewayProxyEventV2) {
 
   try {
     if (method === "POST" && path === "/communities") {
-      return await createCommunity(body);
+      const { requestContext } = event;
+
+      const userId = requestContext.authorizer.jwt.claims.sub;
+
+      const parsedBody = JSON.parse(body ?? "{}");
+      parsedBody["ownerId"] = userId;
+
+      return await createCommunity(JSON.stringify(parsedBody));
     }
 
     if (method === "GET" && path === "/communities") {

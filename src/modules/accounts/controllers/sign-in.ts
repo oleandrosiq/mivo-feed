@@ -15,7 +15,7 @@ const signInSchema = z.object({
   password: z.string().min(6),
 });
 
-export async function handler(event: APIGatewayProxyEventV2) {
+export async function signInAccount(event: APIGatewayProxyEventV2) {
   try {
     const { body } = event;
     const { data, success, error } = signInSchema.safeParse(
