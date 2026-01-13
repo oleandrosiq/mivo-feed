@@ -4,6 +4,8 @@ import { listAccounts } from "./controllers/list-accounts";
 import { getAccount } from "./controllers/get-account";
 import { updateAccount } from "./controllers/update-account";
 import { deleteAccount } from "./controllers/delete-account";
+import { UsernameExistsException } from "@aws-sdk/client-cognito-identity-provider";
+import { response } from "../../utils/response";
 
 export async function handler(event: APIGatewayProxyEventV2) {
   const { requestContext, body, pathParameters } = event;
@@ -41,9 +43,11 @@ export async function handler(event: APIGatewayProxyEventV2) {
     };
   } catch (error) {
     console.error("Erro no processamento da requisição:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Erro interno do servidor" }),
-    };
+
+    if (error instanceof UsernameExistsException) {
+      return response(409, { message: "This email is already registered" });
+    }
+
+    return response(500, { error: "Erro interno do servidor" });
   }
 }

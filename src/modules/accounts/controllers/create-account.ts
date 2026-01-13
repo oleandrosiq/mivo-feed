@@ -1,10 +1,12 @@
 import z from "zod";
+import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import { SignUpCommand } from "@aws-sdk/client-cognito-identity-provider";
 
-import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { env } from "../../../config/env";
 import { dynamoClient } from "../../../lib/dynamoClient";
 import { EEntityType } from "../../../interfaces/entityType";
 import { response } from "../../../utils/response";
+import { cognitoClient } from "../../../lib/cognitoClient";
 
 const createAccountSchema = z.object({
   email: z.email(),
@@ -27,26 +29,18 @@ export async function createAccount(body?: string) {
     };
   }
 
-  const accountId = crypto.randomUUID();
+  const signUpCommand = new SignUpCommand({
+    ClientId: env.COGNITO_CLIENT_ID,
+    Username: data.email,
+    Password: data.password,
+    UserAttributes: [{ Name: "name", Value: data.name }],
+  });
+
+  const { UserSub: accountId } = await cognitoClient.send(signUpCommand);
+
   const dateNow = new Date().toISOString();
 
   const { name, email, password } = data;
-
-  const queryCommand = new QueryCommand({
-    TableName: env.MIVO_TABLE!,
-    IndexName: "GSI1",
-    KeyConditionExpression: "GSI1PK = :gsi1pk AND GSI1SK = :gsi1sk",
-    ExpressionAttributeValues: {
-      ":gsi1pk": "ACCOUNTS",
-      ":gsi1sk": `ACCOUNT#${email}`,
-    },
-  });
-
-  const { Items } = await dynamoClient.send(queryCommand);
-
-  if (Items && Items.length > 0) {
-    return response(409, { error: "E-mail already exists" });
-  }
 
   const command = new PutCommand({
     TableName: env.MIVO_TABLE!,

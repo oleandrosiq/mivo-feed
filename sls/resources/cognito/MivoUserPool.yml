@@ -24,11 +24,7 @@ Resources:
           RequireSymbols: false
           TemporaryPasswordValidityDays: 2
       Schema:
-        - Name: given_name
-          AttributeDataType: String
-          Mutable: true
-          Required: true
-        - Name: family_name
+        - Name: name
           AttributeDataType: String
           Mutable: true
           Required: true
