@@ -7,12 +7,20 @@ accountController:
     - httpApi:
         path: /accounts
         method: GET
+        authorizer:
+          name: CognitoAuthorizer
     - httpApi:
         path: /accounts/{accountId}
         method: GET
+        authorizer:
+          name: CognitoAuthorizer
     - httpApi:
         path: /accounts/{accountId}
         method: PUT
+        authorizer:
+          name: CognitoAuthorizer
     - httpApi:
         path: /accounts/{accountId}
         method: DELETE
+        authorizer:
+          name: CognitoAuthorizer

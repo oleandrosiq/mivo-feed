@@ -4,15 +4,23 @@ communitiesController:
     - httpApi:
         path: /communities
         method: POST
+        authorizer:
+          name: CognitoAuthorizer
     - httpApi:
         path: /communities
         method: GET
     - httpApi:
         path: /communities/{slug}
         method: GET
+        authorizer:
+          name: CognitoAuthorizer
     - httpApi:
         path: /communities/{slug}
         method: PUT
+        authorizer:
+          name: CognitoAuthorizer
     - httpApi:
         path: /communities/{slug}
         method: DELETE
+        authorizer:
+          name: CognitoAuthorizer

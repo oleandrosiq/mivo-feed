@@ -10,6 +10,18 @@ environment:
   MIVO_TABLE: !Ref MivoTable
   ALGOLIA_APP_ID: ${env:ALGOLIA_APP_ID}
   ALGOLIA_API_KEY: ${env:ALGOLIA_API_KEY}
+  COGNITO_USER_POOL_ID: !Ref MivoFeedUserPool
+  COGNITO_CLIENT_ID: !Ref MivoFeedUserPoolClient
+
+httpApi:
+  authorizers:
+    CognitoAuthorizer:
+      type: jwt
+      identitySource: $request.header.Authorization
+      issuerUrl: !GetAtt MivoFeedUserPool.ProviderURL
+      audience:
+        - !Ref MivoFeedUserPoolClient
+
 iam:
   role:
     statements:
@@ -23,3 +35,7 @@ iam:
         Resource:
           - !GetAtt MivoTable.Arn # Short Syntax
           - !Join ["/", [!GetAtt MivoTable.Arn, "index", "*"]]
+      - Effect: Allow
+        Action:
+          - cognito-idp:AdminGetUser # IDP = Identity Provider
+        Resource: !GetAtt MivoFeedUserPool.Arn

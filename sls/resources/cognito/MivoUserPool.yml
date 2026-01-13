@@ -1,0 +1,48 @@
+Resources:
+  MivoFeedUserPool: # logical name
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: MivoFeedUserPool-${self:custom.defaults.stage}
+      MfaConfiguration: OFF
+      AutoVerifiedAttributes:
+        - email
+      DeletionProtection: INACTIVE # Protejo o User Pool contra deleção acidental
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false # Defino que os usuários podem se auto registrar
+      UsernameAttributes:
+        - email # Permito que o usuário faça login com o e-mail
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireUppercase: false
+          RequireLowercase: false
+          RequireNumbers: false
+          RequireSymbols: false
+          TemporaryPasswordValidityDays: 2
+      Schema:
+        - Name: given_name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+        - Name: family_name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+
+  MivoFeedUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: MivoFeedUserPoolClient-${self:custom.defaults.stage}
+      UserPoolId: !Ref MivoFeedUserPool
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      TokenValidityUnits:
+        AccessToken: hours
+        RefreshToken: hours
+      AccessTokenValidity: 3
+      RefreshTokenValidity: 1440 # 60 days
