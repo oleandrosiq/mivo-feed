@@ -7,16 +7,17 @@ import { dynamoClient } from "../../../lib/dynamoClient";
 import { EEntityType } from "../../../interfaces/entityType";
 import { response } from "../../../utils/response";
 import { cognitoClient } from "../../../lib/cognitoClient";
+import type { APIGatewayProxyEventV2 } from "aws-lambda";
 
-const createAccountSchema = z.object({
+const signUpSchema = z.object({
   email: z.email(),
   password: z.string().min(6),
   name: z.string().min(1),
 });
 
-export async function createAccount(body?: string) {
-  const { data, success, error } = createAccountSchema.safeParse(
-    body ? JSON.parse(body) : {}
+export async function signUp(event: APIGatewayProxyEventV2) {
+  const { data, success, error } = signUpSchema.safeParse(
+    event.body ? JSON.parse(event.body) : {}
   );
 
   if (!success) {

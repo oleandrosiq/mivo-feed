@@ -16,6 +16,7 @@ package:
   #   - src/templates/*.hbs
 
 functions:
+  - ${file(./sls/functions/auth.yml)}
   - ${file(./sls/functions/accounts.yml)}
   - ${file(./sls/functions/communities.yml)}
 

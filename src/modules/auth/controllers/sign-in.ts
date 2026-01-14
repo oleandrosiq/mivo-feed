@@ -17,9 +17,8 @@ const signInSchema = z.object({
 
 export async function signInAccount(event: APIGatewayProxyEventV2) {
   try {
-    const { body } = event;
     const { data, success, error } = signInSchema.safeParse(
-      body ? JSON.parse(body) : {}
+      event.body ? JSON.parse(event.body) : {}
     );
 
     if (!success) {
