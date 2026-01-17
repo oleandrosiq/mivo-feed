@@ -1,5 +1,5 @@
 processDDBStream:
-  handler: src/services/processDDBStream.handler
+  handler: src/services/process-ddb-stream.handler
   events:
     - stream:
         type: dynamodb

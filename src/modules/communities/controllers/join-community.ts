@@ -1,5 +1,6 @@
-import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 import z from "zod";
+import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+
 import { env } from "../../../config/env";
 import { dynamoClient } from "../../../lib/dynamoClient";
 import { response } from "../../../utils/response";
@@ -14,7 +15,7 @@ const joinCommunitySchema = z.object({
 
 export async function joinCommunity(body?: string) {
   const { data, success, error } = joinCommunitySchema.safeParse(
-    body ? JSON.parse(body) : {}
+    body ? JSON.parse(body) : {},
   );
 
   if (!success) {

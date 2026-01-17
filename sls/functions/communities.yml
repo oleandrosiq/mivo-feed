@@ -30,6 +30,11 @@ communitiesController:
         authorizer:
           name: CognitoAuthorizer
     - httpApi:
+        path: /communities/{slug}/leave
+        method: POST
+        authorizer:
+          name: CognitoAuthorizer
+    - httpApi:
         path: /accounts/communities/owned
         method: GET
         authorizer:
