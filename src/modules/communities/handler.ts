@@ -6,6 +6,7 @@ import { listCommunitiesByUserOwned } from "./controllers/list-communities-user-
 import { listCommunitiesByUserMemberOf } from "./controllers/list-communities-user-member-of";
 import { joinCommunity } from "./controllers/join-community";
 import { leaveCommunity } from "./controllers/leave-community";
+import { listCommunityMembers } from "./controllers/list-community-members";
 
 export async function handler(event: APIGatewayProxyEventV2WithJWTAuthorizer) {
   const { requestContext, body, pathParameters } = event;
@@ -36,6 +37,13 @@ export async function handler(event: APIGatewayProxyEventV2WithJWTAuthorizer) {
 
     if (method === "GET" && path === "/accounts/communities/member-of") {
       return await listCommunitiesByUserMemberOf(userId as string);
+    }
+
+    if (method === "GET" && path.match(/^\/communities\/[^\/]+\/members$/)) {
+      const parsedBody = JSON.parse(body ?? "{}");
+      parsedBody["communitySlug"] = pathParameters?.slug;
+
+      return await listCommunityMembers(JSON.stringify(parsedBody));
     }
 
     if (method === "POST" && path.match(/^\/communities\/[^\/]+\/join$/)) {

@@ -15,6 +15,11 @@ communitiesController:
         authorizer:
           name: CognitoAuthorizer
     - httpApi:
+        path: /communities/{slug}/members
+        method: GET
+        authorizer:
+          name: CognitoAuthorizer
+    - httpApi:
         path: /communities/{slug}
         method: PUT
         authorizer:
