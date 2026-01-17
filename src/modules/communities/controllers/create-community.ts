@@ -10,7 +10,7 @@ import { itemToAccount } from "../../../utils/mappers/account";
 
 const createCommunitySchema = z.object({
   name: z.string().min(3),
-  ownerId: z.string(),
+  authenticatedUserId: z.string(),
 });
 
 export async function createCommunity(body?: string) {
@@ -31,7 +31,7 @@ export async function createCommunity(body?: string) {
   const communityId = crypto.randomUUID();
   const now = new Date().toISOString();
 
-  const { name, ownerId } = data;
+  const { name, authenticatedUserId: ownerId } = data;
 
   const slug = buildSlug(name);
 

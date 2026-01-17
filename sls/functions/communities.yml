@@ -24,3 +24,18 @@ communitiesController:
         method: DELETE
         authorizer:
           name: CognitoAuthorizer
+    - httpApi:
+        path: /communities/{slug}/join
+        method: POST
+        authorizer:
+          name: CognitoAuthorizer
+    - httpApi:
+        path: /accounts/communities/owned
+        method: GET
+        authorizer:
+          name: CognitoAuthorizer
+    - httpApi:
+        path: /accounts/communities/member-of
+        method: GET
+        authorizer:
+          name: CognitoAuthorizer

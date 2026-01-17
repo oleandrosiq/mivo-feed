@@ -19,6 +19,7 @@ functions:
   - ${file(./sls/functions/auth.yml)}
   - ${file(./sls/functions/accounts.yml)}
   - ${file(./sls/functions/communities.yml)}
+  - ${file(./sls/functions/processDDBStream.yml)}
 
 resources:
   - ${file(./sls/resources/dynamodb/MivoTable.yml)}

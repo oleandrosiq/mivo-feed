@@ -31,3 +31,25 @@ Resources:
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+        #
+        #
+        #
+        #
+# StreamViewType: Define quais informações são gravadas no stream quando um item é modificado
+#
+# NEW_AND_OLD_IMAGES: Quando esta opção é selecionada, o DynamoDB Streams captura:
+#   - A imagem ANTIGA (OLD_IMAGE): O estado completo do item ANTES da modificação
+#   - A imagem NOVA (NEW_IMAGE): O estado completo do item APÓS a modificação
+#
+# Isso é útil quando você precisa:
+#   - Comparar valores antes e depois de uma alteração
+#   - Implementar lógica de auditoria detalhada
+#   - Detectar exatamente quais atributos foram modificados
+#   - Reverter alterações se necessário
+#
+# Outras opções disponíveis:
+#   - KEYS_ONLY: Apenas as chaves do item modificado
+#   - NEW_IMAGE: Apenas o estado após a modificação
+#   - OLD_IMAGE: Apenas o estado antes da modificação

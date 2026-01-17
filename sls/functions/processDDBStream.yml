@@ -1,0 +1,18 @@
+processDDBStream:
+  handler: src/services/processDDBStream.handler
+  events:
+    - stream:
+        type: dynamodb
+        arn: !GetAtt MivoTable.StreamArn
+        batchSize: 5
+        maximumRetryAttempts: 3
+        filterPatterns:
+          - eventName:
+              - INSERT
+              - MODIFY
+              - REMOVE
+          - dynamodb:
+              NewImage:
+                type:
+                  S:
+                    - equals-ignore-case: "Member"
